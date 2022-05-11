@@ -14,3 +14,5 @@ docker-compose up
 yarn start
 ```
 
+
+Some requests example are available in insomnia file.
