@@ -17,7 +17,7 @@
       "typeorm": "0.3.6"
    },
    "scripts": {
-      "start": "set NODE_ENV=dev && ts-node-dev --transpile-only src/index.ts",
+      "start": "ts-node-dev --transpile-only src/index.ts",
       "typeorm": "typeorm-ts-node-commonjs"
    }
 }

@@ -14,7 +14,6 @@ export class CreateClassService {
 
     async execute({ name, description, category_id, tags_id }: ClassRequest): Promise<Class | Error> {
         const repoClass = AppDataSource.getRepository(Class);
-        const repoTag = AppDataSource.getRepository(Tag);
         const repoCategory = AppDataSource.getRepository(Category);
 
         if (!await repoCategory.findOneBy({ id: category_id })) {
@@ -31,7 +30,14 @@ export class CreateClassService {
             category_id
         });
 
+        classData.tags = await this.tagValidation(tags_id);
 
+        await repoClass.save(classData);
+        return classData;
+    }
+
+    async tagValidation(tags_id: number[]) {
+        const repoTag = AppDataSource.getRepository(Tag);
         const tagsResult = []
 
         for await (const tagId of tags_id) {
@@ -40,11 +46,6 @@ export class CreateClassService {
         }
 
         const validTags = tagsResult.filter(async (tag) => (await tag) !== null);
-
-        classData.tags = validTags;
-
-        await repoClass.save(classData);
-
-        return classData;
+        return validTags
     }
 }
